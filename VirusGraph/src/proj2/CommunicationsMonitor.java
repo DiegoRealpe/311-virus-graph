@@ -48,32 +48,44 @@ public class CommunicationsMonitor {
 			return;
 		constructed = true;
 		Ledger.sort(null); // nlog(n)
-		
-		//for each connection fill the hashmap with references each new node connection
+
+		// for each connection fill the hashmap with references each new node connection
 		for (Connection entry : Ledger) {
-			//A and B Reference each other
+			// A and B Reference each other
 			entry.A.addEdge(entry.B);
 			entry.B.addEdge(entry.A);
-			
-			//Node A References
-			if(!nodeMap.containsKey(entry.getIDA())) { //If it is the first entry
-				nodeMap.put(entry.getIDA(), new LinkedList<ComputerNode>()); //create LL
+
+			// Node A References
+			if (!nodeMap.containsKey(entry.getIDA())) { // If it is the first entry
+				nodeMap.put(entry.getIDA(), new LinkedList<ComputerNode>()); // create LL
+				nodeMap.get(entry.getIDA()).add(entry.A);
+			} else {
+				ComputerNode tail = nodeMap.get(entry.getIDA()).peekLast();
+				if(tail.equals(entry.A)) { //If the exact timestamp already exists only add a new edge this entry has
+					tail.addEdge(entry.B);
+				}
+				else {
+					tail.addEdge(entry.A); // else get last entry and reference new node
+					nodeMap.get(entry.getIDA()).addLast(entry.A);
+				}
 			}
-			else {
-				nodeMap.get(entry.getIDA()).peekLast().addEdge(entry.A); //else get last entry and reference new node
-			}
-			nodeMap.get(entry.getIDA()).addLast(entry.A);
-			
-			//Node B References (same)
-			if(!nodeMap.containsKey(entry.getIDB())) {
+
+			// Node B References (same)
+			if (!nodeMap.containsKey(entry.getIDB())) {
 				nodeMap.put(entry.getIDB(), new LinkedList<ComputerNode>());
+				nodeMap.get(entry.getIDB()).add(entry.B);
+			} else {
+				ComputerNode tail = nodeMap.get(entry.getIDB()).peekLast();
+				if(tail.equals(entry.B)) { //If the exact timestamp already exists only add a new edge this entry has
+					tail.addEdge(entry.A);
+				}
+				else {
+					tail.addEdge(entry.B); // else get last entry and reference new node
+					nodeMap.get(entry.getIDB()).addLast(entry.B);
+				}
 			}
-			else {
-				nodeMap.get(entry.getIDB()).peekLast().addEdge(entry.B);
-			}
-			nodeMap.get(entry.getIDB()).addLast(entry.B);
 		}
-		
+
 	}
 
 	/**
@@ -104,7 +116,7 @@ public class CommunicationsMonitor {
 	public List<ComputerNode> queryInfection(int c1, int c2, int x, int y) {
 		if (!constructed)
 			return null;
-		return null;
+		return null; //TODO - Oof
 	}
 
 	/**
@@ -134,7 +146,7 @@ public class CommunicationsMonitor {
 	public List<ComputerNode> getComputerMapping(int c) {
 		if (!constructed)
 			return null;
-		return null;
+		return (List<ComputerNode>) nodeMap.get(c);
 	}
 
 	/**

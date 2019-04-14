@@ -52,6 +52,12 @@ public class ComputerNode {
 	
 	protected void addEdge(ComputerNode n) {
 		Connections.add(n);
+		this.equals(n);
+	}
+	
+	//True only if the nodes have the same ID and timestamp
+	public boolean equals(ComputerNode n) {
+		return (ID == n.getID()) && (Timestamp == n.getTimestamp());
 	}
 	
 	public String toString() {
