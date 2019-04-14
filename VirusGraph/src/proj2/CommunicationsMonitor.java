@@ -1,5 +1,6 @@
 package proj2;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -7,14 +8,13 @@ import java.util.List;
  * The CommunicationsMonitor class represents the graph G built to answer
  * infection queries.
  *
- * @author
- * @author
- * @author
+ * @author diegort
  */
 public class CommunicationsMonitor {
 
-	
-	
+	public ArrayList<Connection> Ledger = new ArrayList<Connection>();
+	private boolean constructed = false;
+
 	/**
 	 * Constructor with no parameters
 	 */
@@ -32,6 +32,9 @@ public class CommunicationsMonitor {
 	 * @param timestamp Time the communication took place.
 	 */
 	public void addCommunication(int c1, int c2, int timestamp) {
+		if(constructed || c1 < 0 || c2 < 0 || timestamp < 0 )
+			return;
+		Ledger.add(new Connection(c1, c2, timestamp));
 	}
 
 	/**
@@ -39,6 +42,10 @@ public class CommunicationsMonitor {
 	 * should run in O(n + m log m) time.
 	 */
 	public void createGraph() {
+		if(constructed)
+			return;
+		constructed = true;
+		Ledger.sort(null);
 	}
 
 	/**
@@ -94,5 +101,13 @@ public class CommunicationsMonitor {
 	 */
 	public List<ComputerNode> getComputerMapping(int c) {
 		return null;
+	}
+	
+	/**
+	 * Getter for the communication ledger
+	 * @return
+	 */
+	public ArrayList<Connection> getLedger(){
+		return Ledger;
 	}
 }

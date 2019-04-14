@@ -1,5 +1,11 @@
 package proj2;
 
+/**
+ * This class contains a connection between two nodes and can be sorted
+ * by its time stamp since it implements comparable. Instantiates both nodes
+ * and acts as a wrapper for them until the monitor assembles the graph
+ * @author diegort
+ */
 public class Connection implements Comparable<Connection> {
 
 	ComputerNode A, B;
