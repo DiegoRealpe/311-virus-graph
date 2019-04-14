@@ -8,21 +8,21 @@ package proj2;
  */
 public class Connection implements Comparable<Connection> {
 
-	ComputerNode A, B;
-	int timestamp;
+	protected ComputerNode A, B;
+	protected int timestamp;
 
 	public Connection(int nodeA, int nodeB, int time) {
 		A = new ComputerNode(nodeA, time);
 		B = new ComputerNode(nodeB, time);
 		timestamp = time;
 	}
-
-	public ComputerNode getNodeA() {
-		return A;
+	
+	public int getIDA() {
+		return A.getID();
 	}
-
-	public ComputerNode getNodeB() {
-		return B;
+	
+	public int getIDB() {
+		return B.getID();
 	}
 
 	public int getTimestamp() {
@@ -32,5 +32,9 @@ public class Connection implements Comparable<Connection> {
 	@Override
 	public int compareTo(Connection o) {
 		return timestamp - o.timestamp;
+	}
+	
+	public String toString() {
+		return A.toString() + " - " + B.toString();
 	}
 }

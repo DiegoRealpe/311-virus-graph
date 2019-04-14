@@ -49,6 +49,31 @@ public class CommunicationsMonitor {
 		constructed = true;
 		Ledger.sort(null); // nlog(n)
 		
+		//for each connection fill the hashmap with references each new node connection
+		for (Connection entry : Ledger) {
+			//A and B Reference each other
+			entry.A.addEdge(entry.B);
+			entry.B.addEdge(entry.A);
+			
+			//Node A References
+			if(!nodeMap.containsKey(entry.getIDA())) { //If it is the first entry
+				nodeMap.put(entry.getIDA(), new LinkedList<ComputerNode>()); //create LL
+			}
+			else {
+				nodeMap.get(entry.getIDA()).peekLast().addEdge(entry.A); //else get last entry and reference new node
+			}
+			nodeMap.get(entry.getIDA()).addLast(entry.A);
+			
+			//Node B References (same)
+			if(!nodeMap.containsKey(entry.getIDB())) {
+				nodeMap.put(entry.getIDB(), new LinkedList<ComputerNode>());
+			}
+			else {
+				nodeMap.get(entry.getIDB()).peekLast().addEdge(entry.B);
+			}
+			nodeMap.get(entry.getIDB()).addLast(entry.B);
+		}
+		
 	}
 
 	/**

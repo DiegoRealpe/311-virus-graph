@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,14 +28,14 @@ public class projectTests {
 		monitor.addCommunication(1, 2, 104);
 		monitor.addCommunication(1, 2, 203);
 		monitor.addCommunication(1, 2, 336);
+		monitor.createGraph();
 	}
 
 	@Test
 	public void checkOrder() {
 		initFull();
-		monitor.createGraph();
 		one = monitor.getLedger().iterator().next();
-		assertEquals(one.timestamp, 104);
+		assertEquals(one.getTimestamp(), 104);
 	}
 
 	@Test
@@ -46,7 +45,7 @@ public class projectTests {
 		monitor.createGraph();
 		monitor.addCommunication(1, 2, 104);
 		one = monitor.getLedger().iterator().next();
-		assertEquals(156, one.timestamp);
+		assertEquals(156, one.getTimestamp());
 	}
 
 	@Test
@@ -82,6 +81,8 @@ public class projectTests {
 		List<ComputerNode> nodeOneList = monitor.getComputerMapping().get(new Integer(1));
 		LinkedList<ComputerNode> a = (LinkedList<ComputerNode>) nodeOneList;
 		assertNotNull(a.peek());
+		System.out.println(a.peek());
+		System.out.println(monitor.Ledger.get(0));
 	}
 	
 	@Test

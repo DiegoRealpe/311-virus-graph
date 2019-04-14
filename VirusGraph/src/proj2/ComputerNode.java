@@ -49,5 +49,13 @@ public class ComputerNode {
 	public List<ComputerNode> getOutNeighbors() {
 		return (List<ComputerNode>) Connections;
 	}
+	
+	protected void addEdge(ComputerNode n) {
+		Connections.add(n);
+	}
+	
+	public String toString() {
+		return "Node#" + ID + "@" + Timestamp;
+	}
 
 }
