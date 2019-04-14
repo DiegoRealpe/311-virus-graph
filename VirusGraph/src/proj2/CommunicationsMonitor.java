@@ -2,6 +2,7 @@ package proj2;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -13,6 +14,7 @@ import java.util.List;
 public class CommunicationsMonitor {
 
 	public ArrayList<Connection> Ledger = new ArrayList<Connection>();
+	public HashMap<Integer, LinkedList<ComputerNode>> nodeMap = new HashMap<>();
 	private boolean constructed = false;
 
 	/**
@@ -32,7 +34,7 @@ public class CommunicationsMonitor {
 	 * @param timestamp Time the communication took place.
 	 */
 	public void addCommunication(int c1, int c2, int timestamp) {
-		if(constructed || c1 < 0 || c2 < 0 || timestamp < 0 )
+		if (constructed || c1 < 0 || c2 < 0 || timestamp < 0)
 			return;
 		Ledger.add(new Connection(c1, c2, timestamp));
 	}
@@ -42,10 +44,11 @@ public class CommunicationsMonitor {
 	 * should run in O(n + m log m) time.
 	 */
 	public void createGraph() {
-		if(constructed)
+		if (constructed)
 			return;
 		constructed = true;
-		Ledger.sort(null);
+		Ledger.sort(null); // nlog(n)
+		
 	}
 
 	/**
@@ -74,6 +77,8 @@ public class CommunicationsMonitor {
 	 *         otherwise.
 	 */
 	public List<ComputerNode> queryInfection(int c1, int c2, int x, int y) {
+		if (!constructed)
+			return null;
 		return null;
 	}
 
@@ -89,7 +94,9 @@ public class CommunicationsMonitor {
 	 *         objects.
 	 */
 	public HashMap<Integer, List<ComputerNode>> getComputerMapping() {
-		return null;
+		if (!constructed)
+			return null;
+		return new HashMap<Integer, List<ComputerNode>>(nodeMap);
 	}
 
 	/**
@@ -100,14 +107,17 @@ public class CommunicationsMonitor {
 	 * @return ComputerNode objects associated with c.
 	 */
 	public List<ComputerNode> getComputerMapping(int c) {
+		if (!constructed)
+			return null;
 		return null;
 	}
-	
+
 	/**
 	 * Getter for the communication ledger
+	 * 
 	 * @return
 	 */
-	public ArrayList<Connection> getLedger(){
+	public ArrayList<Connection> getLedger() {
 		return Ledger;
 	}
 }
