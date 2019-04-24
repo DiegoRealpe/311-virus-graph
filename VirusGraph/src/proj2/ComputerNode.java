@@ -14,6 +14,7 @@ public class ComputerNode {
 	private int ID;
 	private int Timestamp;
 	private ArrayList<ComputerNode> Connections;
+	public boolean visited;
 
 	public ComputerNode(int givenID, int givenTime) {
 		ID = givenID;

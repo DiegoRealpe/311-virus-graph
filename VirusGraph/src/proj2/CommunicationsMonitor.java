@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * The CommunicationsMonitor class represents the graph G built to answer
@@ -16,6 +17,7 @@ public class CommunicationsMonitor {
 
 	public ArrayList<Connection> Ledger = new ArrayList<Connection>();
 	public HashMap<Integer, LinkedList<ComputerNode>> nodeMap = new HashMap<>();
+	public Queue<ComputerNode> ConnQueue = new LinkedList<>();
 	private boolean constructed = false;
 
 	/**
@@ -129,14 +131,58 @@ public class CommunicationsMonitor {
 		if(pZero == null)
 			return null;
 		
+		//Initialize all nodes as not visited
+		for (LinkedList<ComputerNode> computerAccesses: nodeMap.values()) {
+			for (ComputerNode n : computerAccesses) {
+				n.visited = false;
+			}
+		}
+		
 		//start
-		List<ComputerNode> VirusPath = new ArrayList<ComputerNode>();
-		VirusPath.add(0, pZero);
-		
-		
-		
-		return VirusPath;
+		return recPathFind(pZero, c2, y);
 	}
+	
+	/**
+	 * Mathod that recursively fills up a linked list of a path when it has found one
+	 * Using linkedlist so I can push from beginning to end the nodes of the path
+	 * since it will get filled up as the recursion returns
+	 * @param node
+	 * @param targetID
+	 * @param limit
+	 * @return LL with node(s) if successful, null if not
+	 */
+	public LinkedList<ComputerNode> recPathFind(ComputerNode node, int targetID, int limit){
+		//always set the node as visited first
+		node.visited = true;
+		
+		//Look if this node satisfies the query
+		if(node.getID() == targetID && node.getTimestamp() <= limit) {
+			//if it does, create a new list with target as first node
+			LinkedList<ComputerNode> callbackPath = new LinkedList<>();
+			callbackPath.addFirst(node);
+			return callbackPath;
+		}
+		//Don't even test a node past the time we query, its children are past too
+		if(node.getTimestamp() > limit) {
+			return null;
+		}
+		
+		//else for each neighbor node call recursion on it
+		for (ComputerNode neigh : node.getOutNeighbors()) {
+			if(neigh.visited == false) {
+				LinkedList<ComputerNode> callbackPath = recPathFind(neigh, targetID, limit);
+				//if the recursion results in a valid list it means it found the target before or at timelimit
+				if(callbackPath != null) {
+					callbackPath.addFirst(node);
+					return callbackPath;
+				}
+			}
+		}
+		//if none found the path or it doesn't have children return null
+		return null;
+		
+	}
+	
 
 	/**
 	 * Returns a HashMap that represents the mapping between an Integer and a list
