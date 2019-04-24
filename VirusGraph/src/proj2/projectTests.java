@@ -32,7 +32,7 @@ public class projectTests {
 		monitor.createGraph();
 	}
 
-	/*@Test
+	@Test
 	public void checkOrder() {
 		initFull();
 		one = monitor.getLedger().iterator().next();
@@ -94,7 +94,7 @@ public class projectTests {
 		assertEquals(104, a.getTimestamp());
 		ComputerNode b = a.getOutNeighbors().get(0);
 		assertEquals(2, b.getID());
-	}*/
+	}
 	
 	/**
 	 * Infection tests

@@ -58,6 +58,10 @@ public class ComputerNode {
 	
 	//True only if the nodes have the same ID and timestamp
 	public boolean equals(ComputerNode n) {
+	    if (n == null)
+	        return false;
+		if (this == n)
+	        return true;
 		return (ID == n.getID()) && (Timestamp == n.getTimestamp());
 	}
 	

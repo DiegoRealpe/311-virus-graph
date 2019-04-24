@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import java.util.List;
 
-public class CommunicationsMonitorTest {
+public class piazzaTests1 {
 
     // Instance variables
     CommunicationsMonitor monitor;

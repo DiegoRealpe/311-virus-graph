@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 /**
  * The CommunicationsMonitor class represents the graph G built to answer
@@ -17,7 +16,6 @@ public class CommunicationsMonitor {
 
 	public ArrayList<Connection> Ledger = new ArrayList<Connection>();
 	public HashMap<Integer, LinkedList<ComputerNode>> nodeMap = new HashMap<>();
-	public Queue<ComputerNode> ConnQueue = new LinkedList<>();
 	private boolean constructed = false;
 
 	/**
@@ -162,6 +160,7 @@ public class CommunicationsMonitor {
 			callbackPath.addFirst(node);
 			return callbackPath;
 		}
+		
 		//Don't even test a node past the time we query, its children are past too
 		if(node.getTimestamp() > limit) {
 			return null;
