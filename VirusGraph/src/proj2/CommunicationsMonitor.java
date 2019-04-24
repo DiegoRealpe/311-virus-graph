@@ -2,6 +2,7 @@ package proj2;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -61,10 +62,9 @@ public class CommunicationsMonitor {
 				nodeMap.get(entry.getIDA()).add(entry.A);
 			} else {
 				ComputerNode tail = nodeMap.get(entry.getIDA()).peekLast();
-				if(tail.equals(entry.A)) { //If the exact timestamp already exists only add a new edge this entry has
+				if (tail.equals(entry.A)) { // If the exact timestamp already exists only add a new edge this entry has
 					tail.addEdge(entry.B);
-				}
-				else {
+				} else {
 					tail.addEdge(entry.A); // else get last entry and reference new node
 					nodeMap.get(entry.getIDA()).addLast(entry.A);
 				}
@@ -76,11 +76,10 @@ public class CommunicationsMonitor {
 				nodeMap.get(entry.getIDB()).add(entry.B);
 			} else {
 				ComputerNode tail = nodeMap.get(entry.getIDB()).peekLast();
-				if(tail.equals(entry.B)) { //If the exact timestamp already exists only add a new edge this entry has
+				if (tail.equals(entry.B)) {
 					tail.addEdge(entry.A);
-				}
-				else {
-					tail.addEdge(entry.B); // else get last entry and reference new node
+				} else {
+					tail.addEdge(entry.B);
 					nodeMap.get(entry.getIDB()).addLast(entry.B);
 				}
 			}
@@ -114,9 +113,29 @@ public class CommunicationsMonitor {
 	 *         otherwise.
 	 */
 	public List<ComputerNode> queryInfection(int c1, int c2, int x, int y) {
-		if (!constructed)
+		//Checks for constructed G with at least one c1 node and one c2
+		if (!constructed || !nodeMap.containsKey(c1) || !nodeMap.containsKey(c2))
 			return null;
-		return null; //TODO - Oof
+
+		//Iterates to get starting node
+		Iterator<ComputerNode> scanner = nodeMap.get(c1).iterator();
+		ComputerNode pZero = null;
+		while (scanner.hasNext()) {
+			pZero = scanner.next();
+			if(pZero.getTimestamp() >= x) {
+				break; //stop at the first bigger or equal time
+			}
+		}
+		if(pZero == null)
+			return null;
+		
+		//start
+		List<ComputerNode> VirusPath = new ArrayList<ComputerNode>();
+		VirusPath.add(0, pZero);
+		
+		
+		
+		return VirusPath;
 	}
 
 	/**
