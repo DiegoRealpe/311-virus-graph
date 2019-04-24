@@ -114,19 +114,23 @@ public class CommunicationsMonitor {
 	 */
 	public List<ComputerNode> queryInfection(int c1, int c2, int x, int y) {
 		//Checks for constructed G with at least one c1 node and one c2
-		if (!constructed || !nodeMap.containsKey(c1) || !nodeMap.containsKey(c2))
+		if (!constructed || !nodeMap.containsKey(c1) || !nodeMap.containsKey(c2) || y < x)
 			return null;
 
 		//Iterates to get starting node
 		Iterator<ComputerNode> scanner = nodeMap.get(c1).iterator();
-		ComputerNode pZero = null;
+		ComputerNode pZero = scanner.next();
+		//smallest (first conn) needs to be smaller than end time
+		if(pZero.getTimestamp() > y)
+			return null;
 		while (scanner.hasNext()) {
-			pZero = scanner.next();
 			if(pZero.getTimestamp() >= x) {
 				break; //stop at the first bigger or equal time
 			}
+			pZero = scanner.next();
 		}
-		if(pZero == null)
+		//If the end of the list is smallest than the start then no infection can occur
+		if(pZero.getTimestamp() < x)
 			return null;
 		
 		//Initialize all nodes as not visited
