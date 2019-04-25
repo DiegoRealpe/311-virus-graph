@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author diegort
  */
-public class ComputerNode {
+public class ComputerNode  {
 
 	private int ID;
 	private int Timestamp;
@@ -57,11 +57,15 @@ public class ComputerNode {
 	}
 	
 	//True only if the nodes have the same ID and timestamp
-	public boolean equals(ComputerNode n) {
-	    if (n == null)
+	@Override
+	public boolean equals(Object o) {
+	    if (o == null)
 	        return false;
-		if (this == n)
+		if (this == o)
 	        return true;
+		if (!(o instanceof ComputerNode)) 
+            return false; 
+		ComputerNode n = (ComputerNode) o;
 		return (ID == n.getID()) && (Timestamp == n.getTimestamp());
 	}
 	
