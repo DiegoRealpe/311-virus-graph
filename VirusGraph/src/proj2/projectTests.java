@@ -3,6 +3,7 @@ package proj2;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -62,7 +63,7 @@ public class projectTests {
 		gotAdded = monitor.getLedger().iterator().hasNext();
 		assertEquals(false, gotAdded);
 	}
-
+	
 	@Test
 	public void mapExists() {
 		initFull();
@@ -96,9 +97,7 @@ public class projectTests {
 		assertEquals(2, b.getID());
 	}
 	
-	/**
-	 * Infection tests
-	 */
+	
 	@Before
 	public void makeCustom1() {
 		initEmpty();
@@ -134,4 +133,62 @@ public class projectTests {
 		assertEquals(10, VirusPath.get(0).getTimestamp());
 	}
 	
+	@Test
+	public void oneConnection() {
+		initEmpty();
+		monitor.addCommunication(1, 2, 101);
+		monitor.addCommunication(1, 2, 99);
+		monitor.createGraph();
+		List<ComputerNode> nodeOneList = monitor.queryInfection(1, 1, 100, 102);
+		assertTrue(!nodeOneList.isEmpty());
+		assertEquals(1, nodeOneList.size());
+		assertEquals(101, nodeOneList.get(0).getTimestamp());
+		nodeOneList = monitor.queryInfection(1, 1, 101, 101);
+		assertTrue(!nodeOneList.isEmpty());
+		assertEquals(1, nodeOneList.size());
+		assertEquals(101, nodeOneList.get(0).getTimestamp());
+		nodeOneList = monitor.queryInfection(1, 1, 101, 103);
+		assertTrue(!nodeOneList.isEmpty());
+		assertEquals(1, nodeOneList.size());
+		assertEquals(101, nodeOneList.get(0).getTimestamp());
+	}
+	
+	@Test
+	public void variousSimultaneous() {
+		initEmpty();
+		monitor.addCommunication(1, 2, 100);
+		monitor.addCommunication(3, 5, 100);
+		monitor.addCommunication(1, 4, 100);
+		monitor.addCommunication(1, 5, 100);
+		monitor.addCommunication(4, 6, 100);
+		monitor.addCommunication(7, 6, 100);
+		monitor.addCommunication(8, 9, 100);
+		monitor.createGraph();
+		List<ComputerNode> nodeOneList;
+		
+		//Nodes 1 - 7 are all connected in between them
+		for (int i = 1; i < 8; i++) {
+			for (int j = 1; j < 8; j++) {
+				nodeOneList = monitor.queryInfection(i, j, 100, 100);
+				assertTrue(!nodeOneList.isEmpty());
+			}
+		}
+		//Nodes 1 - 7 are not connected to neither 8 or 9
+		for (int j = 1; j < 8; j++) {
+			nodeOneList = monitor.queryInfection(8, j, 100, 100);
+			assertNull(nodeOneList);
+			nodeOneList = monitor.queryInfection(9, j, 100, 100);
+			assertNull(nodeOneList);
+			
+			nodeOneList = monitor.queryInfection(j, 8, 100, 100);
+			assertNull(nodeOneList);
+			nodeOneList = monitor.queryInfection(j, 9, 100, 100);
+			assertNull(nodeOneList);
+		}
+		nodeOneList = monitor.queryInfection(8, 9, 100, 100);
+		assertTrue(!nodeOneList.isEmpty());
+		
+		nodeOneList = monitor.queryInfection(9, 8, 100, 100);
+		assertTrue(!nodeOneList.isEmpty());
+	}
 }
