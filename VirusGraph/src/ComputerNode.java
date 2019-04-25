@@ -1,4 +1,4 @@
-package proj2;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +11,9 @@ import java.util.List;
  */
 public class ComputerNode  {
 
-	private int ID;
-	private int Timestamp;
-	private ArrayList<ComputerNode> Connections;
+	public int ID;
+	public int Timestamp;
+	public ArrayList<ComputerNode> Connections;
 	public boolean visited;
 
 	public ComputerNode(int givenID, int givenTime) {
@@ -51,7 +51,7 @@ public class ComputerNode  {
 		return (List<ComputerNode>) Connections;
 	}
 	
-	protected void addEdge(ComputerNode n) {
+	public void addEdge(ComputerNode n) {
 		Connections.add(n);
 	}
 	

@@ -1,4 +1,4 @@
-package proj2;
+
 
 /**
  * This class contains a connection between two nodes and can be sorted
@@ -8,8 +8,8 @@ package proj2;
  */
 public class Connection implements Comparable<Connection> {
 
-	protected ComputerNode A, B;
-	protected int timestamp;
+	public ComputerNode A, B;
+	public int timestamp;
 
 	public Connection(int nodeA, int nodeB, int time) {
 		A = new ComputerNode(nodeA, time);

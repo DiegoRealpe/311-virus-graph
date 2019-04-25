@@ -1,4 +1,4 @@
-package proj2;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ public class CommunicationsMonitor {
 
 	public ArrayList<Connection> Ledger = new ArrayList<Connection>();
 	public HashMap<Integer, LinkedList<ComputerNode>> nodeMap = new HashMap<>();
-	private boolean constructed = false;
+	public boolean constructed = false;
 
 	/**
 	 * Constructor with no parameters
